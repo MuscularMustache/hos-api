@@ -45,9 +45,13 @@ app.use(session({
 // assign the current user to the 'req.user' object.  See also servces/auth.js
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
 
-// NOTE: should specify which URL cors is enabled for - defaults to all
-app.use(bodyParser.json(), cors());
+// NOTE: necessary for passing login credentials
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 app.use('/graphql', expressGraphQL({
   schema,
