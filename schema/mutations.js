@@ -1,10 +1,16 @@
 const graphql = require('graphql');
 const {
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
+  GraphQLID
 } = graphql;
+const mongoose = require('mongoose');
 const UserType = require('./types/user_type');
 const AuthService = require('../services/auth');
+const ListType = require('./types/list_type');
+const List = mongoose.model('list');
+const ConsequenceType = require('./types/consequence_type');
+const Consequence = mongoose.model('consequence');
 
 // since we can do a password confirmation on the frontend we don't need to send
 //- a password and pw confirmation to the backend
@@ -43,8 +49,41 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, { email, password }, req) {
         return AuthService.login({ email, password, req });
       }
+    },
+    addList: {
+      type: ListType,
+      args: {
+        title: { type: GraphQLString }
+      },
+      resolve(parentValue, { title }) {
+        return (new List({ title })).save()
+      }
+    },
+    addConsequenceToList: {
+      type: ListType,
+      args: {
+        content: { type: GraphQLString },
+        listId: { type: GraphQLID }
+      },
+      resolve(parentValue, { content, listId }) {
+        return List.addConsequence(listId, content);
+      }
+    },
+    deleteList: {
+      type: ListType,
+      args: { id: { type: GraphQLID } },
+      resolve(parentValue, { id }) {
+        return List.remove({ _id: id });
+      }
     }
   }
 });
+
+// NOTE: the list type accepts boolean crieria that i'll have to update later
+//- when i change user list access
+
+// TODO: need to add delete consequence
+
+// TODO: add editing abilities
 
 module.exports = mutation;
