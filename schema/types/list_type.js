@@ -15,7 +15,7 @@ const ListType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
-    customList: { type: GraphQLBoolean },
+    listType: { type: GraphQLString },
     pullForGame: {type: GraphQLBoolean },
     consequences: {
       type: new GraphQLList(ConsequenceType),

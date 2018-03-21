@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ListSchema = new Schema({
   title: { type: String },
-  customList: { type: Boolean, default: true },
+  listType: { type: String, default: 'custom' },
   pullForGame: { type: Boolean, default: true },
   user: {
     type: Schema.Types.ObjectId,
@@ -31,6 +31,14 @@ ListSchema.statics.findConsequences = function(id) {
   return this.findById(id)
     .populate('consequences')
     .then(list => list.consequences);
+}
+
+ListSchema.statics.togglePull = function(id) {
+  return this.findById(id).then(list => {
+    // toggle boolean
+    list.pullForGame = !list.pullForGame;
+    return list.save();
+  });
 }
 
 mongoose.model('list', ListSchema);
