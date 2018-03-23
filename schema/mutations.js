@@ -82,14 +82,21 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, { id }) {
         return List.togglePull(id);
       }
-    }
+    },
+    deleteConsequence: {
+      type: ConsequenceType,
+      args: { id: { type: GraphQLID } },
+      resolve(parentValue, { id }) {
+        return Consequence.remove({ _id: id });
+      }
+    },
   }
 });
 
 // NOTE: the list type accepts boolean crieria that i'll have to update later
 //- when i change user list access
 
-// TODO: need to add delete consequence
+// TODO: need to delete all consequences related to a list when deleteing a list
 
 // TODO: add editing abilities
 
