@@ -41,4 +41,16 @@ ListSchema.statics.togglePull = function(id) {
   });
 }
 
+ListSchema.statics.removeListAndConsequences = function(id) {
+  return this.findById(id).then(list => {
+    list.consequences.forEach(con => {
+      // grab the consequence model to search for this lists inner consequences
+      mongoose.model('consequence').findById(con).then(innerCon => {
+        return innerCon.remove();
+      });
+    });
+    return list.remove();
+  });
+}
+
 mongoose.model('list', ListSchema);

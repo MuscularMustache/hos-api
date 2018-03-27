@@ -73,7 +73,7 @@ const mutation = new GraphQLObjectType({
       type: ListType,
       args: { id: { type: GraphQLID } },
       resolve(parentValue, { id }) {
-        return List.remove({ _id: id });
+        return List.removeListAndConsequences(id);
       }
     },
     toggleListPull: {
