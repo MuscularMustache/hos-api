@@ -6,6 +6,7 @@ const {
 } = graphql;
 const mongoose = require('mongoose');
 const UserType = require('./types/user_type');
+const User = mongoose.model('user');
 const AuthService = require('../services/auth');
 const ListType = require('./types/list_type');
 const List = mongoose.model('list');
@@ -53,10 +54,14 @@ const mutation = new GraphQLObjectType({
     addList: {
       type: ListType,
       args: {
-        title: { type: GraphQLString }
+        title: { type: GraphQLString },
+        userId: { type: GraphQLID }
       },
-      resolve(parentValue, { title }) {
-        return (new List({ title })).save()
+      resolve(parentValue, { title, userId }) {
+        // find user and create a new list with the whole user and new list title
+        return User.findById(userId).then(user => {
+          return (new List({ title, user })).save();
+        });
       }
     },
     addConsequenceToList: {
@@ -92,12 +97,5 @@ const mutation = new GraphQLObjectType({
     },
   }
 });
-
-// NOTE: the list type accepts boolean crieria that i'll have to update later
-//- when i change user list access
-
-// TODO: need to delete all consequences related to a list when deleteing a list
-
-// TODO: add editing abilities
 
 module.exports = mutation;

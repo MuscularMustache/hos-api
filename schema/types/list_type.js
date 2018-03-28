@@ -17,6 +17,13 @@ const ListType = new GraphQLObjectType({
     title: { type: GraphQLString },
     listType: { type: GraphQLString },
     pullForGame: {type: GraphQLBoolean },
+    user: {
+      type: require('./user_type'),
+      resolve(parentValue) {
+        // find user from models
+        return List.findUser(parentValue.id);
+      }
+    },
     consequences: {
       type: new GraphQLList(ConsequenceType),
       resolve(parentValue) {
