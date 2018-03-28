@@ -20,8 +20,10 @@ const RootQueryType = new GraphQLObjectType({
     },
     lists: {
       type: new GraphQLList(ListType),
-      resolve() {
-        return List.find({});
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      resolve(parentValue, { id }) {
+        // return all lists that belong to a user - id is userId
+        return List.find({}).where({ user: id });
       }
     },
     list: {

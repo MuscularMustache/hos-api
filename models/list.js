@@ -33,6 +33,12 @@ ListSchema.statics.findConsequences = function(id) {
     .then(list => list.consequences);
 }
 
+ListSchema.statics.findUser = function(id) {
+  return this.findById(id)
+    .populate('user')
+    .then(list => list.user );
+}
+
 ListSchema.statics.togglePull = function(id) {
   return this.findById(id).then(list => {
     // toggle boolean
