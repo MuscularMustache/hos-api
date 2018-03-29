@@ -2,7 +2,8 @@ const graphql = require('graphql');
 const {
   GraphQLObjectType,
   GraphQLString,
-  GraphQLID
+  GraphQLID,
+  GraphQLNonNull
 } = graphql;
 const mongoose = require('mongoose');
 const UserType = require('./types/user_type');
@@ -54,10 +55,13 @@ const mutation = new GraphQLObjectType({
     addList: {
       type: ListType,
       args: {
-        title: { type: GraphQLString },
-        userId: { type: GraphQLID }
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        userId: { type: new GraphQLNonNull(GraphQLID) }
       },
       resolve(parentValue, { title, userId }) {
+        if (title === '') {
+          throw 'List name cannot be blank!';
+        }
         // find user and create a new list with the whole user and new list title
         return User.findById(userId).then(user => {
           return (new List({ title, user })).save();
@@ -67,10 +71,13 @@ const mutation = new GraphQLObjectType({
     addConsequenceToList: {
       type: ListType,
       args: {
-        content: { type: GraphQLString },
-        listId: { type: GraphQLID }
+        content: { type: new GraphQLNonNull(GraphQLString) },
+        listId: { type: new GraphQLNonNull(GraphQLID) }
       },
       resolve(parentValue, { content, listId }) {
+        if (content === '') {
+          throw 'Consequence cannot be blank!';
+        }
         return List.addConsequence(listId, content);
       }
     },
