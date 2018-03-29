@@ -53,7 +53,7 @@ ListSchema.statics.removeListAndConsequences = function(id) {
       // grab the consequence model to search for this lists inner consequences
       mongoose.model('consequence').findById(con).then(innerCon => {
         return innerCon.remove();
-      });
+      }).catch(err => { return err; });
     });
     return list.remove();
   });
