@@ -23,6 +23,8 @@ const RootQueryType = new GraphQLObjectType({
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parentValue, { id }) {
         // return all lists that belong to a user - id is userId
+        // thinking about it, this seems inefficient
+        // this alway works, i wonder if its more efficient- return List.find({user: id});
         return List.find({}).where({ user: id });
       }
     },
