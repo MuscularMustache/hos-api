@@ -15,14 +15,14 @@ const GameType = new GraphQLObjectType({
   name:  'GameType',
   fields: () => ({
     id: { type: GraphQLID },
-    user: {
-      type: userType,
-      resolve(parentValue) {
-        // find user from models
-        console.log('here');
-        return List.findUser(parentValue.id);
-      }
-    },
+    // user: {
+    //   type: userType,
+    //   resolve(parentValue) {
+    //     // find user from models
+    //     // NOTE: double check if i need this - i kinda feel like i dont (also double check in list type)
+    //     return List.findUser(parentValue.id);
+    //   }
+    // },
     lists: {
       type: new GraphQLList(listType),
       resolve(parentValue) {

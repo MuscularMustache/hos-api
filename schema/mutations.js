@@ -109,19 +109,11 @@ const mutation = new GraphQLObjectType({
       type: GameType,
       args: { userId: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parentValue, { userId }) {
+        // NEED TO DENY NEW GAME CREATION IF USER HAS AN ACTIVE GAME - PROBABLY NEED A FINISH FLAG TO DELETE GAME
+        // NEED TO ADD A REOPEN GAME PROBABLY
         return List.find({user: userId, pullForGame: true}).then(lists => {
           return (new Game({ user: userId, lists })).save();
         });
-
-        // DENY NEW GAME CREATION IF USER HAS AN ACTIVE GAME
-        // NOTE: WORKS
-        // return (new Game({ user: userId, lists })).save().then(game => {
-        //   return Game.createGame(userId, game.id);
-        // });
-
-        console.log('--------------------------------------');
-        console.log('lists', lists);
-        // return (new Game({ user: userId, lists })).save();
       }
     }
   }
