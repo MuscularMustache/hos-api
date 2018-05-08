@@ -6,6 +6,8 @@ const ListType = require('./types/list_type');
 const List = mongoose.model('list');
 const ConsequenceType = require('./types/consequence_type');
 const Consequence = mongoose.model('consequence');
+const GameType = require('./types/game_type');
+const Game = mongoose.model('game');
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -22,10 +24,8 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ListType),
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parentValue, { id }) {
-        // return all lists that belong to a user - id is userId
-        // thinking about it, this seems inefficient
-        // this alway works, i wonder if its more efficient- return List.find({user: id});
-        return List.find({}).where({ user: id });
+        // return all lists that belong to a user - id is userId - prev: return List.find({}).where({ user: id });
+        return List.find({user: id});
       }
     },
     list: {
@@ -40,6 +40,14 @@ const RootQueryType = new GraphQLObjectType({
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parnetValue, { id }) {
         return Consequence.findById(id);
+      }
+    },
+    game: {
+      type: new GraphQLList(GameType),
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      resolve(parentValue, { id }) {
+        // i think i have to make this a GraphQLList because when i do find it filters results and has to be an array
+        return Game.find({user: id});
       }
     }
   }
