@@ -112,7 +112,14 @@ const mutation = new GraphQLObjectType({
         // NEED TO ADD A DELETE GAME QUERY
         return Game.startGame(userId);
       }
-    }
+    },
+    deleteGame: {
+      type: GameType,
+      args: { id: { type: GraphQLID } },
+      resolve(parentValue, { id }) {
+        return Game.remove({ _id: id });
+      }
+    },
   }
 });
 
