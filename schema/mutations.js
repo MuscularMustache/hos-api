@@ -109,7 +109,6 @@ const mutation = new GraphQLObjectType({
       type: GameType,
       args: { userId: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parentValue, { userId }) {
-        // NEED TO ADD A DELETE GAME QUERY
         return Game.startGame(userId);
       }
     },
