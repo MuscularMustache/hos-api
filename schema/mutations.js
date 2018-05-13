@@ -14,6 +14,9 @@ const List = mongoose.model('list');
 const ConsequenceType = require('./types/consequence_type');
 const Consequence = mongoose.model('consequence');
 
+const GameType = require('./types/game_type');
+const Game = mongoose.model('game');
+
 // since we can do a password confirmation on the frontend we don't need to send
 //- a password and pw confirmation to the backend
 // the return in the resolve is necessary because it responds with a promise so gql will wait until its resolved
@@ -100,6 +103,20 @@ const mutation = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parentValue, { id }) {
         return Consequence.remove({ _id: id });
+      }
+    },
+    startGame: {
+      type: GameType,
+      args: { userId: { type: new GraphQLNonNull(GraphQLID) } },
+      resolve(parentValue, { userId }) {
+        return Game.startGame(userId);
+      }
+    },
+    deleteGame: {
+      type: GameType,
+      args: { id: { type: GraphQLID } },
+      resolve(parentValue, { id }) {
+        return Game.remove({ _id: id });
       }
     },
   }

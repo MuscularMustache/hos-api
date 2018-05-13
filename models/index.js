@@ -2,3 +2,4 @@
 require('./user');
 require('./list');
 require('./consequence');
+require('./game');
