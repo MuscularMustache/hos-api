@@ -55,6 +55,16 @@ const mutation = new GraphQLObjectType({
         return AuthService.login({ email, password, req });
       }
     },
+    setTheme: {
+      type: UserType,
+      args: {
+        id: { type: GraphQLID },
+        theme: { type: GraphQLString }
+      },
+      resolve(parentValue, { id, theme }) {
+        return User.setTheme(id, theme);
+      }
+    },
     addList: {
       type: ListType,
       args: {
