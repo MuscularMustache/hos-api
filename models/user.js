@@ -6,7 +6,9 @@ const Schema = mongoose.Schema;
 // plain text - see the authentication helpers below.
 const UserSchema = new Schema({
   email: String,
-  password: String
+  password: String,
+  theme: { type: String, default: 'default' },
+  premiumMember: { type: Boolean, default: false }
 });
 
 // The user's password is never saved in plain text.  Prior to saving the
@@ -37,5 +39,13 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
     cb(err, isMatch);
   });
 };
+
+UserSchema.statics.setTheme = function(id, theme) {
+  return this.findById(id)
+    .then(user => {
+      user.theme = theme;
+      return user.save();
+    });
+}
 
 mongoose.model('user', UserSchema);
