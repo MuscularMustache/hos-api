@@ -108,6 +108,26 @@ const mutation = new GraphQLObjectType({
         return List.togglePull(id);
       }
     },
+    editList: {
+      type: ListType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        title: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parentValue, { id, title }) {
+        return List.editList(id, title);
+      }
+    },
+    editConsequence: {
+      type: ConsequenceType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        content: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parentValue, { id, content }) {
+        return Consequence.editConsequence(id, content);
+      }
+    },
     deleteConsequence: {
       type: ConsequenceType,
       args: { id: { type: GraphQLID } },
