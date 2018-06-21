@@ -115,6 +115,9 @@ const mutation = new GraphQLObjectType({
         title: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(parentValue, { id, title }) {
+        if (title === '') {
+          throw 'List name cannot be blank!';
+        }
         return List.editList(id, title);
       }
     },
@@ -125,6 +128,9 @@ const mutation = new GraphQLObjectType({
         content: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(parentValue, { id, content }) {
+        if (content === '') {
+          throw 'Consequence cannot be blank!';
+        }
         return Consequence.editConsequence(id, content);
       }
     },
