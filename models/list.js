@@ -47,6 +47,13 @@ ListSchema.statics.togglePull = function(id) {
   });
 }
 
+ListSchema.statics.editList = function(id, title) {
+  return this.findById(id).then(list => {
+    list.title = title;
+    return list.save();
+  });
+}
+
 ListSchema.statics.removeListAndConsequences = function(id) {
   return this.findById(id).then(list => {
     list.consequences.forEach(con => {

@@ -9,6 +9,13 @@ const ConsequenceSchema = new Schema({
   content: { type: String }
 });
 
+ConsequenceSchema.statics.editConsequence = function(id, content) {
+  return this.findById(id).then(consequence => {
+    consequence.content = content;
+    return consequence.save();
+  });
+}
+
 // add these if i want to track each pull and pick
 // to get a select percentage for consequence comparisons
 // pulls: { type: Number, default: 0 },
