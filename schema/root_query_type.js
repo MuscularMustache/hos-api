@@ -1,7 +1,8 @@
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLNonNull } = graphql;
+const { GraphQLObjectType, GraphQLID, GraphQLList, GraphQLNonNull, GraphQLString } = graphql;
 const mongoose = require('mongoose');
 const UserType = require('./types/user_type');
+const User = mongoose.model('user');
 const ListType = require('./types/list_type');
 const List = mongoose.model('list');
 const ConsequenceType = require('./types/consequence_type');
@@ -15,9 +16,16 @@ const RootQueryType = new GraphQLObjectType({
     // this user is the currently logged in user
     user: {
       type: UserType,
-      resolve(parentValue, args, req) {
-        // returns user if authenticated and null if it is not
-        return req.user;
+      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      resolve(parentValue, { id }) {
+        return User.findById(id);
+      }
+    },
+    authuser: {
+      type: UserType,
+      args: { id: { type: new GraphQLNonNull(GraphQLString) } },
+      resolve(parentValue, { id }) {
+        return User.findOne({userID: id});
       }
     },
     lists: {

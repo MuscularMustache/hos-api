@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/MuscularMustache/hos-api#readme",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "connect-mongo": "^2.0.1",
     "cors": "^2.8.4",
@@ -27,9 +26,7 @@
     "express-session": "^1.15.6",
     "graphql": "^0.13.2",
     "lodash": "^4.17.5",
-    "mongoose": "^5.0.10",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "mongoose": "^5.0.10"
   },
   "devDependencies": {
     "nodemon": "^1.17.2"

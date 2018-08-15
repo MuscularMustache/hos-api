@@ -8,7 +8,6 @@ const {
 const mongoose = require('mongoose');
 const UserType = require('./types/user_type');
 const User = mongoose.model('user');
-const AuthService = require('../services/auth');
 const ListType = require('./types/list_type');
 const List = mongoose.model('list');
 const ConsequenceType = require('./types/consequence_type');
@@ -23,36 +22,13 @@ const Game = mongoose.model('game');
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    signup: {
+    setUser: {
       type: UserType,
       args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString }
+        userID: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve(parentValue, { email, password }, req) {
-        return AuthService.signup({ email, password, req });
-      }
-    },
-    logout: {
-      type: UserType,
-      // NOTE: since theres no args here we dont pass anything into the mutation
-      resolve(parentValue, args, req) {
-        // when we call req.logout it returns the user property off the request
-        //- we need to return something from the resolve so we save the user in a const before
-        //- logging out and sending it along
-        const { user } = req;
-        req.logout();
-        return user;
-      }
-    },
-    login: {
-      type: UserType,
-      args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString }
-      },
-      resolve(parentValue, { email, password }, req) {
-        return AuthService.login({ email, password, req });
+      resolve(parentValue, { userID }) {
+        return User.setUser(userID);
       }
     },
     setTheme: {

@@ -4,8 +4,6 @@ const expressGraphQL = require('express-graphql');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const passport = require('passport');
-const passportConfig = require('./services/auth');
 const MongoStore = require('connect-mongo')(session);
 const schema = require('./schema/schema');
 const keys = require('../config/keys');
@@ -40,17 +38,12 @@ app.use(session({
   })
 }));
 
-// Passport is wired into express as a middleware. When a request comes in,
-// Passport will examine the request's session (as set by the above config) and
-// assign the current user to the 'req.user' object.  See also servces/auth.js
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(bodyParser.json());
 
 // NOTE: necessary for passing login credentials
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
+  origin: 'http://localhost:3000'
+  // credentials: true
 }));
 
 app.use('/graphql', expressGraphQL({
