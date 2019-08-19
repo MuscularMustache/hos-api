@@ -24,7 +24,7 @@
     "connect-mongo": "^2.0.1",
     "cors": "^2.8.4",
     "deep-extend": ">=0.5.1",
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "express-graphql": "^0.6.12",
     "express-session": "^1.15.6",
     "graphql": "^0.13.2",
